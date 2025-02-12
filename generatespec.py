@@ -23,7 +23,7 @@ def plot_spectrogram(iq_data, fs=1e6, nfft=1024, noverlap=512):
 
 def main():
     """Main function to load and process IQ file."""
-    file_path = "qpsk_in_noise.iq"
+    file_path = "USRP_1000000.0_K1_06_27_2022_09_37_06_F1024.csv.crdownload"
     print(f"Loading file: {file_path}")
     iq_data = load_iq_file(file_path)
     if iq_data is not None:
