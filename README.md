@@ -3,5 +3,6 @@
 
 to run the frontend:
 
-1. npm install (if not installed yet)
-2. npm run dev
+1. Navigate into frontend folder
+2. npm install (if not installed yet)
+3. npm run dev
