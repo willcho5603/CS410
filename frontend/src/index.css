@@ -25,33 +25,97 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f4f4f9;
+  color: #333;
 }
 
-h1 {
+.header {
+  text-align: center;
+  margin-bottom: 1rem; /* Reduced margin */
+}
+
+.header h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 0.5rem; /* Reduced margin */
+}
+
+.main-content {
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem; /* Reduced padding */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  margin-bottom: 1rem; /* Reduced margin */
+}
+
+.container h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.5rem; /* Reduced margin */
+}
+
+input[type="file"] {
+  margin-bottom: 0.5rem; /* Reduced margin */
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  transition: border-color 0.25s;
+  margin: 0.25rem; /* Reduced margin */
+  transition: background-color 0.3s ease;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: #0056b3;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.loading-message {
+  color: #007bff;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 0.25rem 0; /* Reduced margin */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 0.5rem; /* Reduced margin */
+  border-radius: 8px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -64,5 +128,6 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+    color: #333;
   }
 }
