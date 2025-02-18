@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 from pymongo import MongoClient
-from bson import ObjectId
+from bson.objectid import ObjectId
 from gridfs import GridFS
 import matplotlib
 
