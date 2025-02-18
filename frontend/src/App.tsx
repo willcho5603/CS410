@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import './App.css';
+import './index.css';
 
 interface SavedFile {
   _id: string;
@@ -16,13 +17,13 @@ function App() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      if (file.name.endsWith('.iq') || file.name.endsWith('.cfile')) {
-        setSelectedFile(file);
-        setErrorMessage(null); // Clear any previous error message
-      } else {
-        setErrorMessage('Please upload a file with a .iq or .cfile extension');
-        setSelectedFile(null); // Clear the selected file
-      }
+      // if (file.name.endsWith('.iq') || file.name.endsWith('.cfile')) {
+      //   setSelectedFile(file);
+      //   setErrorMessage(null); // Clear any previous error message
+      // } else {
+      //   setErrorMessage('Please upload a file with a .iq or .cfile extension');
+      //   setSelectedFile(null); // Clear the selected file
+      // }
     }
   };
 
@@ -141,7 +142,7 @@ function App() {
       <h1>GC<sup>3</sup></h1>
       
       {/* File Upload Section */}
-      <div>
+      <div className="container">
         <input type="file" onChange={handleFileChange} />
         <button onClick={handleUpload}>Upload</button>
         <button onClick={handleSave}>Save to Database</button>
@@ -153,7 +154,7 @@ function App() {
       {spectrogram && <img src={`data:image/png;base64,${spectrogram}`} alt="Spectrogram" />}
 
       {/* Saved Files Section */}
-      <div>
+      <div className="container">
         <h2>Saved Files</h2>
         <button onClick={handleClearFiles}>Clear Files</button>
         {savedFiles.length > 0 ? (

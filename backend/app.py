@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import numpy as np
 import matplotlib.pyplot as plt
 import io
 import base64
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from gridfs import GridFS
@@ -35,10 +35,18 @@ def upload_file():
 
     # Generate spectrogram
     plt.figure()
-    plt.specgram(iq_data, Fs=1e6, cmap='viridis')  # Adjust sample rate (Fs) as needed
-    plt.xlabel('Time (s)')
-    plt.ylabel('Frequency (Hz)')
-    plt.title('Spectrogram')
+    Pxx, freqs, bins, im = plt.specgram(iq_data, Fs=1e6, NFFT=1024, noverlap=512, cmap='viridis')  # Adjust sample rate (Fs) as needed
+    plt.close()
+
+    # Transpose the spectrogram data to switch axes
+    Pxx = np.transpose(Pxx)
+
+    # Plot the transposed spectrogram
+    plt.figure()
+    plt.imshow(Pxx, aspect='auto', origin='lower', extent=[freqs.min(), freqs.max(), bins.min(), bins.max()], cmap='viridis')
+    plt.xlabel('Frequency (Hz)')
+    plt.ylabel('Time (s)')
+    plt.colorbar(label='Intensity (dB)')
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close()
@@ -87,7 +95,18 @@ def get_file_spectrogram(file_id):
         
         # Generate spectrogram
         plt.figure()
-        plt.specgram(iq_data, Fs=1e6, cmap='viridis')
+        Pxx, freqs, bins, im = plt.specgram(iq_data, Fs=1e6, NFFT=1024, noverlap=512, cmap='viridis')
+        plt.close()
+
+        # Transpose the spectrogram data to switch axes
+        Pxx = np.transpose(Pxx)
+
+        # Plot the transposed spectrogram
+        plt.figure()
+        plt.imshow(Pxx, aspect='auto', origin='lower', extent=[freqs.min(), freqs.max(), bins.min(), bins.max()], cmap='viridis')
+        plt.xlabel('Frequency (Hz)')
+        plt.ylabel('Time (s)')
+        plt.colorbar(label='Intensity (dB)')
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
         plt.close()
