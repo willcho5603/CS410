@@ -10,10 +10,19 @@ function App() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [spectrogram, setSpectrogram] = useState<string | null>(null);
   const [savedFiles, setSavedFiles] = useState<SavedFile[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setSelectedFile(event.target.files[0]);
+      const file = event.target.files[0];
+      if (file.name.endsWith('.iq') || file.name.endsWith('.cfile')) {
+        setSelectedFile(file);
+        setErrorMessage(null); // Clear any previous error message
+      } else {
+        setErrorMessage('Please upload a file with a .iq or .cfile extension');
+        setSelectedFile(null); // Clear the selected file
+      }
     }
   };
 
@@ -23,6 +32,7 @@ function App() {
       formData.append('file', selectedFile);
 
       console.log("Uploading file:", selectedFile.name);
+      setLoadingMessage("Uploading file...");
 
       try {
         const response = await fetch('http://127.0.0.1:5000/upload', {
@@ -41,6 +51,8 @@ function App() {
         }
       } catch (error) {
         console.error("Error uploading file:", error);
+      } finally {
+        setLoadingMessage(null);
       }
     } else {
       console.log('No file selected');
@@ -53,6 +65,7 @@ function App() {
       formData.append('file', selectedFile);
 
       console.log("Saving file to database:", selectedFile.name);
+      setLoadingMessage("Saving file to database...");
 
       try {
         const response = await fetch('http://127.0.0.1:5000/save', {
@@ -66,6 +79,8 @@ function App() {
         fetchSavedFiles();
       } catch (error) {
         console.error("Error saving file:", error);
+      } finally {
+        setLoadingMessage(null);
       }
     } else {
       console.log('No file selected');
@@ -83,7 +98,24 @@ function App() {
     }
   };
 
+  const handleClearFiles = async () => {
+    setLoadingMessage("Clearing files...");
+    try {
+      const response = await fetch('http://127.0.0.1:5000/clear_files', {
+        method: 'DELETE',
+      });
+      const result = await response.json();
+      console.log("Clear files response received:", result);
+      setSavedFiles([]); // Clear the saved files list in the frontend
+    } catch (error) {
+      console.error("Error clearing files:", error);
+    } finally {
+      setLoadingMessage(null);
+    }
+  };
+
   const handleLoadFile = async (fileId: string) => {
+    setLoadingMessage("Loading file...");
     try {
       const response = await fetch(`http://127.0.0.1:5000/file/${fileId}/spectrogram`);
       const result = await response.json();
@@ -94,6 +126,8 @@ function App() {
       }
     } catch (error) {
       console.error("Error loading file:", error);
+    } finally {
+      setLoadingMessage(null);
     }
   };
 
@@ -113,13 +147,15 @@ function App() {
         <button onClick={handleSave}>Save to Database</button>
       </div>
 
+      {loadingMessage && <p>{loadingMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       {selectedFile && <p>Selected file: {selectedFile.name}</p>}
       {spectrogram && <img src={`data:image/png;base64,${spectrogram}`} alt="Spectrogram" />}
 
       {/* Saved Files Section */}
       <div>
         <h2>Saved Files</h2>
-        <button onClick={fetchSavedFiles}>Refresh Files</button>
+        <button onClick={handleClearFiles}>Clear Files</button>
         {savedFiles.length > 0 ? (
           <ul>
             {savedFiles.map(file => (

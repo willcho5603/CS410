@@ -23,16 +23,22 @@ fs = GridFS(db)
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
+        print("No file part in the request")
         return jsonify({'error': 'No file uploaded'}), 400
 
     file = request.files['file']
-    # Reset file pointer and read data as a numpy array (assuming complex64 format)
-    file.seek(0)
-    iq_data = np.frombuffer(file.read(), dtype=np.complex64)
+    if not (file.filename.endswith('.iq') or file.filename.endswith('.cfile')):
+        print("Invalid file type:", file.filename)
+        return jsonify({'error': 'Invalid file type. Please upload a .iq or .cfile'}), 400
+
+    iq_data = np.frombuffer(file.read(), dtype=np.complex64)  # Assuming complex float32 format
 
     # Generate spectrogram
     plt.figure()
-    plt.specgram(iq_data, Fs=1e6, cmap='viridis')
+    plt.specgram(iq_data, Fs=1e6, cmap='viridis')  # Adjust sample rate (Fs) as needed
+    plt.xlabel('Time (s)')
+    plt.ylabel('Frequency (Hz)')
+    plt.title('Spectrogram')
     buf = io.BytesIO()
     plt.savefig(buf, format='png')
     plt.close()
@@ -89,6 +95,18 @@ def get_file_spectrogram(file_id):
         encoded_img = base64.b64encode(buf.getvalue()).decode('utf-8')
         return jsonify({'spectrogram': encoded_img})
     except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/clear_files', methods=['DELETE'])
+def clear_files():
+    try:
+        # Delete all files in GridFS
+        for file in fs.find():
+            fs.delete(file._id)
+        print("All files cleared from GridFS")
+        return jsonify({'message': 'All files cleared from MongoDB successfully'})
+    except Exception as e:
+        print("Error clearing files:", e)
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
