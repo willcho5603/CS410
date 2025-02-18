@@ -17,13 +17,13 @@ function App() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      // if (file.name.endsWith('.iq') || file.name.endsWith('.cfile')) {
-      //   setSelectedFile(file);
-      //   setErrorMessage(null); // Clear any previous error message
-      // } else {
-      //   setErrorMessage('Please upload a file with a .iq or .cfile extension');
-      //   setSelectedFile(null); // Clear the selected file
-      // }
+      if (file.name.endsWith('.iq') || file.name.endsWith('.cfile')) {
+        setSelectedFile(file);
+        setErrorMessage(null); // Clear any previous error message
+      } else {
+        setErrorMessage('Please upload a file with a .iq or .cfile extension');
+        setSelectedFile(null); // Clear the selected file
+      }
     }
   };
 
