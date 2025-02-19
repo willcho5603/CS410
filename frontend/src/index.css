@@ -69,7 +69,43 @@ body {
 }
 
 input[type="file"] {
-  margin-bottom: 0.5rem; /* Reduced margin */
+  display: none; /* Hide the default file input */
+}
+
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0.25rem; /* Reduced margin */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+  display: inline-block;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  color: #fff; /* Ensure text color remains white on hover */
+}
+
+.button-red {
+  background-color: #ed2626;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0.25rem; /* Reduced margin */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+  display: inline-block;
+  text-align: center;
+}
+
+.button-red:hover {
+  background-color: #cc0000;
+  color: #fff; /* Ensure text color remains white on hover */
 }
 
 button {
@@ -80,11 +116,12 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin: 0.25rem; /* Reduced margin */
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
 }
 
 button:hover {
   background-color: #0056b3;
+  color: #fff; /* Ensure text color remains white on hover */
 }
 
 .loading-message {
@@ -129,5 +166,8 @@ img {
   button {
     background-color: #f9f9f9;
     color: #333;
+  }
+  button:hover {
+    color: #fff; /* Ensure text color remains white on hover */
   }
 }

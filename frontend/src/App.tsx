@@ -169,21 +169,29 @@ function App() {
         {/* File Upload Section */}
         <div className="container">
           <h2>Upload File</h2>
-          <input type="file" onChange={handleFileChange} />
+          <input
+            type="file"
+            id="file-input"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+          <label htmlFor="file-input" className="button">
+            Choose File
+          </label>
           <button onClick={handleUpload}>Upload</button>
           <button onClick={handleSave}>Save to Database</button>
+          {selectedFile && <p>Selected file: {selectedFile.name}</p>}
         </div>
 
         {loadingMessage && <p className="loading-message">{loadingMessage}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
-        {selectedFile && <p>Selected file: {selectedFile.name}</p>}
         {spectrogram && <img src={`data:image/png;base64,${spectrogram}`} alt="Spectrogram" />}
 
         {/* Saved Files Section */}
         <div className="container">
           <h2>Saved Files</h2>
-          <button onClick={handleClearFiles}>Clear Files</button>
+          <button className="button-red" onClick={handleClearFiles}>Clear Files</button>
           {savedFiles.length > 0 ? (
             <ul>
               {savedFiles.map(file => (
